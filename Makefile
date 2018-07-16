@@ -10,7 +10,7 @@ NFD = nativefiledialog/build/obj/x64/Release/nfd/nfd_gtk.o
 OBJS_REL = $(patsubst %.c, $(DIR)/%.o, $(SRCS)) $(NFD)
 OBJS_DEB = $(patsubst %.c, $(DIR)/%.debug.o, $(SRCS)) $(NFD)
 
-CFLAGS = -Wuninitialized $(PARENTCFLAGS) -Inativefiledialog/src/include
+CFLAGS = -Wuninitialized $(PARENTCFLAGS) -I../candle -Inativefiledialog/src/include
 
 CFLAGS_REL = $(CFLAGS) -O3
 
