@@ -5,10 +5,10 @@ DIR = build
 
 SRCS = filepicker.c
 
-NFD = nativefiledialog/build/obj/x64/Release/nfd/nfd_gtk.o
+NFD = nativefiledialog/build/obj/x64/Release/nfd/
 
-OBJS_REL = $(patsubst %.c, $(DIR)/%.o, $(SRCS)) $(NFD)
-OBJS_DEB = $(patsubst %.c, $(DIR)/%.debug.o, $(SRCS)) $(NFD)
+OBJS_REL = $(patsubst %.c, $(DIR)/%.o, $(SRCS)) $(wildcard $(NFD)/*.o)
+OBJS_DEB = $(patsubst %.c, $(DIR)/%.debug.o, $(SRCS)) $(wildcard $(NFD)/*.o)
 
 CFLAGS = -Wuninitialized $(PARENTCFLAGS) -I../candle -Inativefiledialog/src/include
 
@@ -20,7 +20,7 @@ CFLAGS_DEB = $(CFLAGS) -g3
 
 all: $(DIR)/export.a
 
-$(NFD):
+$(NFD)/nfd_gtk.o:
 	$(MAKE) -C nativefiledialog/build/gmake_linux
 
 $(DIR)/export.a: init $(OBJS_REL)
