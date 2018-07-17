@@ -1,6 +1,8 @@
 CC = cc
 LD = cc
 
+DEPS = $(shell pkg-config --libs gtk+-3.0)
+
 DIR = build
 
 SRCS = filepicker.c
@@ -19,6 +21,7 @@ CFLAGS_DEB = $(CFLAGS) -g3
 ##############################################################################
 
 all: $(DIR)/export.a
+	echo $(DEPS) > $(DIR)/deps
 
 $(NFD)/nfd_gtk.o:
 	$(MAKE) -C nativefiledialog/build/gmake_linux
@@ -32,6 +35,7 @@ $(DIR)/%.o: %.c
 ##############################################################################
 
 debug: $(DIR)/export_debug.a
+	echo $(DEPS) > $(DIR)/deps
 
 $(DIR)/export_debug.a: init $(OBJS_DEB)
 	$(AR) rs build/export_debug.a $(OBJS_DEB)
