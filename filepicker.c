@@ -21,6 +21,7 @@ static int c_filepicker_pick_file( c_filepicker_t *self, char **output)
         puts(outPath);
 		*output = outPath;
 		return STOP;
+		/* return HANDLED; */
     }
     else if(result == NFD_CANCEL)
 	{
