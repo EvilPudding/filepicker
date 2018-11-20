@@ -18,14 +18,11 @@ static int c_filepicker_pick_save( c_filepicker_t *self, const char *filter,
 	nfdresult_t result = NFD_SaveDialog( filter, NULL, &outPath );
     if(result == NFD_OKAY)
 	{
-        puts("Success!");
-        puts(outPath);
 		*output = outPath;
 		return STOP;
     }
     else if(result == NFD_CANCEL)
 	{
-        puts("User pressed cancel.");
 		*output = NULL;
     }
     else
@@ -45,15 +42,11 @@ static int c_filepicker_pick_load( c_filepicker_t *self, const char *filter,
         
     if(result == NFD_OKAY)
 	{
-        puts("Success!");
-        puts(outPath);
 		*output = outPath;
 		return STOP;
-		/* return HANDLED; */
     }
     else if(result == NFD_CANCEL)
 	{
-        puts("User pressed cancel.");
 		*output = NULL;
     }
     else
