@@ -1,7 +1,14 @@
 CC = cc
 LD = cc
+AR = ar
+
+emscripten: CC = emcc
+emscripten: LD = emcc
+emscripten: AR = emar
 
 DEPS = $(shell pkg-config --libs gtk+-3.0)
+
+DEPS_EMS = 
 
 DIR = build
 
@@ -15,12 +22,15 @@ NFD_OBJS = $(patsubst $(NFDS)/%.c, $(NFDO)/%.o, $(NFD_SRCS))
 
 OBJS_REL = $(patsubst %.c, $(DIR)/%.o, $(SRCS)) $(NFD_OBJS)
 OBJS_DEB = $(patsubst %.c, $(DIR)/%.debug.o, $(SRCS)) $(NFD_OBJS)
+OBJS_EMS = $(patsubst %.c, $(DIR)/%.emscripten.o, $(SRCS))
 
 CFLAGS = -Wuninitialized $(PARENTCFLAGS) -I../candle -Inativefiledialog/src/include
 
 CFLAGS_REL = $(CFLAGS) -O3
 
 CFLAGS_DEB = $(CFLAGS) -g3
+
+CFLAGS_EMS = $(CFLAGS) -O3
 
 ##############################################################################
 
@@ -35,6 +45,17 @@ $(DIR)/export.a: init $(OBJS_REL)
 
 $(DIR)/%.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS_REL)
+
+##############################################################################
+
+emscripten: $(DIR)/export_emscripten.a
+	echo $(DEPS_EMS) > $(DIR)/deps
+
+$(DIR)/export_emscripten.a: init $(OBJS_EMS)
+	$(AR) rs build/export_emscripten.a $(OBJS_EMS)
+
+$(DIR)/%.emscripten.o: %.c
+	$(CC) -o $@ -c $< $(CFLAGS_EMS)
 
 ##############################################################################
 
