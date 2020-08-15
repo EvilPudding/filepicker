@@ -10,7 +10,7 @@
 
 c_filepicker_t *c_filepicker_new()
 {
-	c_filepicker_t *self = component_new("filepicker");
+	c_filepicker_t *self = component_new(ct_filepicker);
 	return self;
 }
 
@@ -73,11 +73,10 @@ static int c_filepicker_pick_load(c_filepicker_t *self, const char *filter,
     return STOP;
 }
 
-REG()
+void ct_filepicker(ct_t *self)
 {
-	ct_t *ct = ct_new("filepicker", sizeof(c_filepicker_t), NULL, NULL, 0);
-
-	ct_listener(ct, WORLD, 100, sig("pick_file_save"), c_filepicker_pick_save);
-	ct_listener(ct, WORLD, 100, sig("pick_file_load"), c_filepicker_pick_load);
+	ct_init(self, "filepicker", sizeof(c_filepicker_t));
+	ct_add_listener(self, WORLD, 100, ref("pick_file_save"), c_filepicker_pick_save);
+	ct_add_listener(self, WORLD, 100, ref("pick_file_load"), c_filepicker_pick_load);
 }
 

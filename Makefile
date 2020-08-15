@@ -34,8 +34,10 @@ CFLAGS_EMS = $(CFLAGS) -O3
 
 ##############################################################################
 
-all: $(DIR)/export.a
-	echo -n $(DEPS) > $(DIR)/deps
+all: $(DIR)/libs
+
+$(DIR)/libs: $(DIR)/export.a
+	echo $(DEPS) filepicker.candle/$< > $@
 
 $(NFDO)/%.o:
 	$(MAKE) -C nativefiledialog/build/gmake_linux
@@ -48,25 +50,29 @@ $(DIR)/%.o: %.c
 
 ##############################################################################
 
-emscripten: $(DIR)/export_emscripten.a
-	echo $(DEPS_EMS) > $(DIR)/deps
+debug: $(DIR)/libs_debug
 
-$(DIR)/export_emscripten.a: init $(OBJS_EMS)
-	$(AR) rs build/export_emscripten.a $(OBJS_EMS)
-
-$(DIR)/%.emscripten.o: %.c
-	$(CC) -o $@ -c $< $(CFLAGS_EMS)
-
-##############################################################################
-
-debug: $(DIR)/export_debug.a
-	echo $(DEPS) > $(DIR)/deps
+$(DIR)/libs_debug: $(DIR)/export_debug.a
+	echo $(DEPS) mpv.candle/$< > $@
 
 $(DIR)/export_debug.a: init $(OBJS_DEB)
 	$(AR) rs build/export_debug.a $(OBJS_DEB)
 
 $(DIR)/%.debug.o: %.c
 	$(CC) -o $@ -c $< $(CFLAGS_DEB)
+
+##############################################################################
+
+emscripten: $(DIR)/libs_emscripten
+
+$(DIR)/libs_emscripten: $(DIR)/export_emscripten.a
+	echo $(DEPS_EMS) filepicker.candle/$< > $@
+
+$(DIR)/export_emscripten.a: init $(OBJS_EMS)
+	$(AR) rs build/export_emscripten.a $(OBJS_EMS)
+
+$(DIR)/%.emscripten.o: %.c
+	$(CC) -o $@ -c $< $(CFLAGS_EMS)
 
 ##############################################################################
 

@@ -11,7 +11,8 @@ typedef struct c_filepicker_t
 	c_t super;
 } c_filepicker_t;
 
-DEF_CASTER("filepicker", c_filepicker, c_filepicker_t)
+void ct_filepicker(ct_t *self);
+DEF_CASTER(ct_filepicker, c_filepicker, c_filepicker_t)
 
 c_filepicker_t *c_filepicker_new(void);
 
